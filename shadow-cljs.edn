@@ -4,6 +4,7 @@
 
  :dependencies [[binaryage/devtools "0.9.10"]
                 [cljs-http "0.1.46"]
+                [org.clojure/core.async "0.4.490"]
                 [reagent "0.8.1"]]
 
  ;; set an nrepl port for connection to a REPL.

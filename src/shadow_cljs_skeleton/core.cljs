@@ -1,5 +1,7 @@
 (ns shadow-cljs-skeleton.core
-  (:require [reagent.core :as reagent :refer [atom]]))
+  (:require-macros [cljs.core.async.macros :refer [go]])
+  (:require [reagent.core :as reagent :refer [atom]]
+            [cljs-http.client :as http]))
 
 ;; define your app data so that it doesn't get over-written on reload
 
@@ -24,6 +26,12 @@
   ;; stop is called before any code is reloaded
   ;; this is controlled by :before-load in the config
   (js/console.log "stop"))
+
+(go (let [response (<! (http/get "https://www.juicer.io/api/feeds/bonjovi"
+                                 {:query-params {:page 1
+                                                 :per 20}}))]
+      (prn (:status response))
+      (prn (:body response))))
 
 (comment
   )
