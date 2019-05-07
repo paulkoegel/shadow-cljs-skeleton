@@ -14,15 +14,21 @@
 
 (defn full-screen-posts []
   [:div
-   [:div#preloaded-images {:style (into {:width 0
-                                         :height 0
-                                         :display "inline"}
-                                        (mapv (fn [post-url] [:background-image post-url]) @posts-cursor))]
-   [:div {:style {:top 0
-                  :left 0
-                  :background "black"
-                  :color "white"
-                  :font-size 20}}
+   [:div.preloaded-images {:width 0
+                           :height 0
+                           :display "inline"}
+    (map
+      (fn [post-url]
+        [:div {:style {:background-image (str "url(" post-url ")")}
+               :key post-url}])
+      @posts-cursor)]
+
+   [:div.counter {:style {:top 0
+                          :left 0
+                          :position "absolute"
+                          :background "black"
+                          :color "white"
+                          :font-size 20}}
     @index-cursor]
    [:img {:style {:background-image (str "url(" (get @posts-cursor @index-cursor) ")")
                   :background-size "cover"
