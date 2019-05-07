@@ -1,4 +1,5 @@
 .idea/
+.nrepl-port
 .shadow-cljs/
 node_modules/
 public/js/
