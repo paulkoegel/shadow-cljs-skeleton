@@ -5,15 +5,35 @@
 
 ;; define your app data so that it doesn't get over-written on reload
 
-(defonce app-state (atom {:text "Hello world!"}))
+(defonce app-state (atom {:posts []
+                          :index 0
+                          :text "Hello world!"}))
 
-(defn hello-world []
+(def posts-cursor (reagent/cursor app-state [:posts]))
+(def index-cursor (reagent/cursor app-state [:index]))
+
+(defn full-screen-posts []
   [:div
-   [:h1 (:text @app-state)]
-   [:h3 "Edit this and watch it change!"]])
+   [:div#preloaded-images {:style (into {:width 0
+                                         :height 0
+                                         :display "inline"}
+                                        (mapv (fn [post-url] [:background-image post-url]) @posts-cursor))]
+   [:div {:style {:top 0
+                  :left 0
+                  :background "black"
+                  :color "white"
+                  :font-size 20}}
+    @index-cursor]
+   [:img {:style {:background-image (str "url(" (get @posts-cursor @index-cursor) ")")
+                  :background-size "cover"
+                  :width "100vw"
+                  :height "100vh"}
+          :onClick (fn []
+                     (swap! app-state (fn [state]
+                                        (update state :index (fn [index] (mod (inc index) (count (:posts state))))))))}]])
 
 (defn start []
-  (reagent/render-component [hello-world]
+  (reagent/render-component [full-screen-posts]
                             (. js/document (getElementById "app"))))
 
 (defn ^:export init []
@@ -29,9 +49,12 @@
 
 (go (let [response (<! (http/get "https://www.juicer.io/api/feeds/bonjovi"
                                  {:query-params {:page 1
-                                                 :per 20}}))]
-      (prn (:status response))
-      (prn (:body response))))
+                                                 :per 20}}))
+          posts (-> response
+                    :body
+                    :posts
+                    :items)]
+      (swap! app-state (fn [state] (assoc state :posts (mapv :image posts))))))
 
 (comment
   )
