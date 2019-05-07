@@ -11,36 +11,3 @@
 + set up like on screenshot:
   ![](docs/images/cursive-repl-setup.png)
 + run `> (shadow/repl :app)` to connect from Clojure REPL to browser JS console.
-
-
-## Start development server
-+ `$ yarn shadow-cljs watch app`
-
-# {{name}}
-
-## Run
-
-``` shell
-yarn install
-
-yarn watch
-```
-
-## Clean
-
-``` shell
-yarn clean
-```
-
-## Release
-
-``` shell
-yarn release
-```
-
-## License
-
-Copyright © 2017 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
