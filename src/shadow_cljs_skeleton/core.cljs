@@ -55,7 +55,8 @@
 
 (go (let [response (<! (http/get "https://www.juicer.io/api/feeds/bonjovi"
                                  {:query-params {:page 1
-                                                 :per 20}}))
+                                                 :per 20}
+                                  :with-credentials? false}))
           posts (-> response
                     :body
                     :posts
